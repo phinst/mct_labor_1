@@ -1,10 +1,10 @@
 #include "read_write.h"
-//Prozessorspezifische Headerdatei
 #include "p33FJ128GP802.h"
+//Prozessorspezifische Headerdatei
+#include "adw_mgmnt.h"
 //custom headers
-//#include "adw_mgmnt.h"
 
-
+unsigned int adw_read1 = 0;
 
 void d_write(int pinnummer, int value){
     value = value & 0x0001;
@@ -118,12 +118,21 @@ int d_read(int pinnummer){
     return value;
 }
 
-void a_write(int pinnummer){
-    //dac?
+unsigned int analog_manual_read(){
+    AD1CON1bits.SAMP = 1;
+    //starten des Abtastvorgangs
+    while(AD1CON1bits.DONE == 0);
+    //warten bis Abtastung und Konvertierung fertig
+    return ADC1BUF0;
 }
 
-unsigned int a_read(int pinnummer) {
-    //adc
-    int value = 0;
-    return value;
+void __attribute__((__interrupt__, no_auto_psv)) _ADC1Interrupt(void){
+    adw_read1 = ADC1BUF0; 
+    //Lesen des Ergebnisses und global speichern
+    IFS0bits.AD1IF = 0; 
+    // Clear AD1 Interrupt Flag
+}
+
+void a_write(int pinnummer){
+    //dac?
 }

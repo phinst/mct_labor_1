@@ -1,6 +1,6 @@
 #include "clk_mgmnt.h"
-//Prozessorspezifische Headerdatei
 #include <p33FJ128GP802.h>
+//Prozessorspezifische Headerdatei
 
 void clk_reset(){
     //OSCCON HIGH, Primary Source + XT

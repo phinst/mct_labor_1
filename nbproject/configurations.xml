@@ -90,7 +90,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="5_2_2.c" ex="false" overriding="false">
+      <item path="5_2_2.c" ex="true" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -138,7 +138,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="5_5.c" ex="true" overriding="false">
+      <item path="5_5.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -716,7 +716,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="timer_mgmnt.c" ex="true" overriding="false">
+      <item path="timer_mgmnt.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>

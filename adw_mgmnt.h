@@ -12,8 +12,8 @@
 extern "C" {
 #endif
 
-    extern void adw12_cfg(int eingangspin);
-    extern void adw10_cfg(int eingangspin_ch0, int eingangspin_ch1);
+    extern void adw12_cfg(int eingangspin, char mode);
+    extern void adw10_cfg(int eingangspin_ch0, int eingangspin_ch1, char mode);
 
 
 #ifdef	__cplusplus
