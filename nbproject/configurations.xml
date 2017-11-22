@@ -9,6 +9,7 @@
       <itemPath>clk_mgmnt.h</itemPath>
       <itemPath>read_write.h</itemPath>
       <itemPath>adw_mgmnt.h</itemPath>
+      <itemPath>timer_mgmnt.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
