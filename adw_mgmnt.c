@@ -3,7 +3,7 @@
 //Config Header
 #include "basics.h"
 
-void para_ADW_12bit()
+void adw12_cfg()
 {
     AD1CON1bits.AD12B = 1;      //12bit Auflösung
     
