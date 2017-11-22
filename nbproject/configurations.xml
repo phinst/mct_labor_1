@@ -8,8 +8,8 @@
       <itemPath>system_init.h</itemPath>
       <itemPath>clk_mgmnt.h</itemPath>
       <itemPath>read_write.h</itemPath>
-      <itemPath>timer_mgmnt.h</itemPath>
       <itemPath>adw_mgmnt.h</itemPath>
+      <itemPath>timer_mgmnt.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -716,7 +716,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="timer_mgmnt.c" ex="false" overriding="false">
+      <item path="timer_mgmnt.c" ex="true" overriding="false">
         <C30>
         </C30>
         <C30-AR>
