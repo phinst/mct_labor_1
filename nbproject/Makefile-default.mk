@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=system_init.c clk_mgmnt.c port_mgmnt.c read_write.c 5_2_2.c
+SOURCEFILES_QUOTED_IF_SPACED=system_init.c clk_mgmnt.c port_mgmnt.c adw_mgmnt.c read_write.c 5_2_2.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/system_init.o ${OBJECTDIR}/clk_mgmnt.o ${OBJECTDIR}/port_mgmnt.o ${OBJECTDIR}/read_write.o ${OBJECTDIR}/5_2_2.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/system_init.o.d ${OBJECTDIR}/clk_mgmnt.o.d ${OBJECTDIR}/port_mgmnt.o.d ${OBJECTDIR}/read_write.o.d ${OBJECTDIR}/5_2_2.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/system_init.o ${OBJECTDIR}/clk_mgmnt.o ${OBJECTDIR}/port_mgmnt.o ${OBJECTDIR}/adw_mgmnt.o ${OBJECTDIR}/read_write.o ${OBJECTDIR}/5_2_2.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/system_init.o.d ${OBJECTDIR}/clk_mgmnt.o.d ${OBJECTDIR}/port_mgmnt.o.d ${OBJECTDIR}/adw_mgmnt.o.d ${OBJECTDIR}/read_write.o.d ${OBJECTDIR}/5_2_2.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/system_init.o ${OBJECTDIR}/clk_mgmnt.o ${OBJECTDIR}/port_mgmnt.o ${OBJECTDIR}/read_write.o ${OBJECTDIR}/5_2_2.o
+OBJECTFILES=${OBJECTDIR}/system_init.o ${OBJECTDIR}/clk_mgmnt.o ${OBJECTDIR}/port_mgmnt.o ${OBJECTDIR}/adw_mgmnt.o ${OBJECTDIR}/read_write.o ${OBJECTDIR}/5_2_2.o
 
 # Source Files
-SOURCEFILES=system_init.c clk_mgmnt.c port_mgmnt.c read_write.c 5_2_2.c
+SOURCEFILES=system_init.c clk_mgmnt.c port_mgmnt.c adw_mgmnt.c read_write.c 5_2_2.c
 
 
 CFLAGS=
@@ -115,6 +115,13 @@ ${OBJECTDIR}/port_mgmnt.o: port_mgmnt.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  port_mgmnt.c  -o ${OBJECTDIR}/port_mgmnt.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/port_mgmnt.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/port_mgmnt.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/adw_mgmnt.o: adw_mgmnt.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/adw_mgmnt.o.d 
+	@${RM} ${OBJECTDIR}/adw_mgmnt.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  adw_mgmnt.c  -o ${OBJECTDIR}/adw_mgmnt.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/adw_mgmnt.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/adw_mgmnt.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 ${OBJECTDIR}/read_write.o: read_write.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/read_write.o.d 
@@ -150,6 +157,13 @@ ${OBJECTDIR}/port_mgmnt.o: port_mgmnt.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/port_mgmnt.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  port_mgmnt.c  -o ${OBJECTDIR}/port_mgmnt.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/port_mgmnt.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/port_mgmnt.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/adw_mgmnt.o: adw_mgmnt.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/adw_mgmnt.o.d 
+	@${RM} ${OBJECTDIR}/adw_mgmnt.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  adw_mgmnt.c  -o ${OBJECTDIR}/adw_mgmnt.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/adw_mgmnt.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/adw_mgmnt.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/read_write.o: read_write.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
