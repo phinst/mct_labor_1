@@ -56,9 +56,6 @@ void adw12_cfg(int eingangspin){
                     break;
     }
 
-    //set_timer1(61);
-    //setze Timer 1 auf 8kHz
-    
     AD1CON3bits.ADRC = 1;
     //Taktquelle für die Abtastung
     //1: internal (Tad=Tadrc=250ns) 
@@ -151,9 +148,6 @@ void adw10_cfg(int eingangspin_ch0, int eingangspin_ch1){
                     break;
     }        
 
-    //set_timer1(61);
-    //setze Timer 1 auf 8kHz
-    
     AD1CON3bits.ADRC = 1;
     //Taktquelle für die Abtastung
     //1: internal (Tad=Tadrc=250ns) 
