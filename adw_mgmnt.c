@@ -1,8 +1,6 @@
 #include "adw_mgmnt.h"
-//Prozessorspezifische Headerdatei
 #include <p33FJ128GP802.h>
-//custom header
-//#include "timer_mgmnt.h"
+//Prozessorspezifische Headerdatei
 
 //1 ADW
 //12 Bit Modus: Sampling auf max. 1 Kanal
