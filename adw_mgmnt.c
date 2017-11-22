@@ -7,7 +7,7 @@
 //10 Bit Modus: Sampling auf max. 4 Kanälen gleichzeitig
 //Bei Benutzen der Funktionen nicht vergessen, die Portpins via pin_cfg als analoge Eingänge zu schalten!!!
 
-void adw12_cfg(int eingangspin){
+void adw12_cfg(int eingangspin, char mode){
     AD1CON1bits.ADON = 0;       
     //AD-Wandler inaktiv: Kontrollbits nur bei deaktiviertem ADW schreiben!
     AD1CON1bits.AD12B = 1;
@@ -58,8 +58,18 @@ void adw12_cfg(int eingangspin){
     //Taktquelle für die Abtastung
     //1: internal (Tad=Tadrc=250ns) 
     //0: external (Tad=Tcy(ADCS+1) mit AD1CON3.ADCS als Teiler des Systemtaktes
-    AD1CON1bits.ASAM = 1;
-    // automatische Abtastung
+    if(mode == 'm') AD1CON1bits.ASAM = 0;
+    //0: manuelle Abtastung
+    else if(mode == 'a'){
+        AD1CON1bits.ASAM = 1;
+        //1: automatische Abtastung
+        IPC3bits.AD1IP = 3;       
+        // IRQ priority 3
+        IFS0bits.AD1IF = 0;       
+        // clear ADC Interrupt Flag
+        IEC0bits.AD1IE = 1;       
+        // enable the ADC Interrupt
+    }
     AD1CON1bits.SSRC = 0b111;   
     //automatisches Triggern
     AD1CON1bits.FORM = 0b00;    
@@ -67,18 +77,11 @@ void adw12_cfg(int eingangspin){
     //00: unsignend int
     //10: signed int
     
-    IPC3bits.AD1IP = 3;       
-    // IRQ priority 3
-    IFS0bits.AD1IF = 0;       
-    // clear ADC Interrupt Flag
-    IEC0bits.AD1IE = 1;       
-    // enable the ADC Interrupt
-    
     AD1CON1bits.ADON = 1;       
     // AD-Wandler aktiv
 }
 
-void adw10_cfg(int eingangspin_ch0, int eingangspin_ch1){
+void adw10_cfg(int eingangspin_ch0, int eingangspin_ch1, char mode){
     AD1CON1bits.ADON = 0;       
     //AD-Wandler inaktiv: Kontrollbits nur bei deaktiviertem ADW schreiben!
     AD1CON1bits.AD12B = 0;
@@ -150,22 +153,27 @@ void adw10_cfg(int eingangspin_ch0, int eingangspin_ch1){
     //Taktquelle für die Abtastung
     //1: internal (Tad=Tadrc=250ns) 
     //0: external (Tad=Tcy(ADCS+1) mit AD1CON3.ADCS als Teiler des Systemtaktes
-    AD1CON1bits.ASAM = 1;
-    // automatische Abtastung
+    AD1CON1bits.SIMSAM = 0;
+    //1: simultanes Sampling, 0: sequentielles Sampling
+    if(mode == 'm') AD1CON1bits.ASAM = 0;
+    //0: manuelle Abtastung
+    else if(mode == 'a'){
+        AD1CON1bits.ASAM = 1;
+        //1: automatische Abtastung
+        IPC3bits.AD1IP = 3;       
+        // IRQ priority 3
+        IFS0bits.AD1IF = 0;       
+        // clear ADC Interrupt Flag
+        IEC0bits.AD1IE = 1;       
+        // enable the ADC Interrupt
+    }
     AD1CON1bits.SSRC = 0b111;   
-    //automatisches Triggern
+    //automatisches Konvertieren
     AD1CON1bits.FORM = 0b00;    
     //Einstellung des Ausgabeformats
     //00: unsignend int
     //10: signed int
-    
-    IPC3bits.AD1IP = 3;       
-    // IRQ priority 3
-    IFS0bits.AD1IF = 0;       
-    // clear ADC Interrupt Flag
-    IEC0bits.AD1IE = 1;       
-    // enable the ADC Interrupt
-    
+
     AD1CON1bits.ADON = 1;       
     // AD-Wandler aktiv
 }
