@@ -9,6 +9,7 @@
       <itemPath>clk_mgmnt.h</itemPath>
       <itemPath>read_write.h</itemPath>
       <itemPath>timer_mgmnt.h</itemPath>
+      <itemPath>adw_mgmnt.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -691,7 +692,7 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
-      <item path="adw_mgmnt.c" ex="true" overriding="false">
+      <item path="adw_mgmnt.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>
