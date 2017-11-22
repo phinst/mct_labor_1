@@ -1,0 +1,791 @@
+Disassembly Listing for mct_labor_1
+Generated From:
+C:/Users/finst/MPLABXProjects/mct_labor_1.X/dist/default/production/mct_labor_1.X.production.elf
+20.11.2017 15:37:45
+
+---  C:/Users/finst/MPLABXProjects/mct_labor_1.X/timer_mgmnt.c  -----------------------------------------
+1:                 //Prozessorspezifische Headerdatei
+2:                 #include <p33FJ128GP802.h>
+3:                 //Config Header
+4:                 #include "basics.h"
+5:                 
+6:                 void set_timer1(int PR1_value)
+7:                 {
+0005B6  FA0002     LNK #0x2
+0005B8  780F00     MOV W0, [W14]
+8:                     T1CONbits.TON = 0;      // Disable Timer
+0005BA  A9E105     BCLR 0x105, #7
+9:                     T1CONbits.TCS = 0; // Select internal instruction cycle clock
+0005BC  A92104     BCLR T1CON, #1
+10:                    T1CONbits.TGATE = 0; // Disable Gated Timer mode
+0005BE  A9C104     BCLR T1CON, #6
+11:                    T1CONbits.TCKPS = 0b01; // Select 1:8 Prescaler
+0005C0  800821     MOV T1CON, W1
+0005C2  2FFCF0     MOV #0xFFCF, W0
+0005C4  608000     AND W1, W0, W0
+0005C6  A04000     BSET W0, #4
+0005C8  880820     MOV W0, T1CON
+12:                    TMR1 = 0x00; // Clear timer register
+0005CA  EF2100     CLR TMR1
+13:                    PR1 = PR1_value; // Load the period value (249 for 1kHz or 124 for 2kHz)
+0005CC  78001E     MOV [W14], W0
+0005CE  880810     MOV W0, PR1
+14:                    IPC0bits.T1IP = 0x01; // Set Timer1 Interrupt Priority Level
+0005D0  800521     MOV IPC0, W1
+0005D2  28FFF0     MOV #0x8FFF, W0
+0005D4  608000     AND W1, W0, W0
+0005D6  A0C000     BSET W0, #12
+0005D8  880520     MOV W0, IPC0
+15:                    IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
+0005DA  A96084     BCLR IFS0, #3
+16:                    IEC0bits.T1IE = 1; // Enable Timer1 interrupt
+0005DC  A86094     BSET IEC0, #3
+17:                    T1CONbits.TON = 1; // Start Timer
+0005DE  A8E105     BSET 0x105, #7
+18:                }
+0005E0  FA8000     ULNK
+0005E2  060000     RETURN
+19:                
+20:                void set_timer2(int PR2_value)
+21:                {
+0005E4  FA0002     LNK #0x2
+0005E6  780F00     MOV W0, [W14]
+22:                    T2CONbits.TON = 0;      // Disable Timer
+0005E8  A9E111     BCLR 0x111, #7
+23:                    T2CONbits.TCS = 0;      // Select internal instruction cycle clock
+0005EA  A92110     BCLR T2CON, #1
+24:                    T2CONbits.TGATE = 0; // Disable Gated Timer mode
+0005EC  A9C110     BCLR T2CON, #6
+25:                    T2CONbits.TCKPS = 0b01; // Select 1:8 Prescaler
+0005EE  800881     MOV T2CON, W1
+0005F0  2FFCF0     MOV #0xFFCF, W0
+0005F2  608000     AND W1, W0, W0
+0005F4  A04000     BSET W0, #4
+0005F6  880880     MOV W0, T2CON
+26:                    TMR2 = 0x00; // Clear timer register
+0005F8  EF2106     CLR TMR2
+27:                    PR2 = PR2_value; // Load the period value
+0005FA  78001E     MOV [W14], W0
+0005FC  880860     MOV W0, PR2
+28:                    IPC1bits.T2IP = 0x01; // Set Timer1 Interrupt Priority Level
+0005FE  800531     MOV IPC1, W1
+000600  28FFF0     MOV #0x8FFF, W0
+000602  608000     AND W1, W0, W0
+000604  A0C000     BSET W0, #12
+000606  880530     MOV W0, IPC1
+29:                    IFS0bits.T2IF = 0; // Clear Timer1 Interrupt Flag
+000608  A9E084     BCLR IFS0, #7
+30:                    IEC0bits.T2IE = 1; // Enable Timer1 interrupt
+00060A  A8E094     BSET IEC0, #7
+31:                    T2CONbits.TON = 1; // Start Timer
+00060C  A8E111     BSET 0x111, #7
+32:                }
+00060E  FA8000     ULNK
+000610  060000     RETURN
+---  C:/Users/finst/MPLABXProjects/mct_labor_1.X/pwm_mgmnt.c  -------------------------------------------
+1:                 //Prozessorspezifische Headerdatei
+2:                 #include <p33FJ128GP802.h>
+3:                 //Config Header
+4:                 #include "basics.h"
+5:                 
+6:                 void pwm_init()
+7:                 {
+000656  FA0000     LNK #0x0
+8:                     OC1CONbits.OCM = 0b000;     //Disable Output Compare Module
+000658  800C21     MOV OC1CON, W1
+00065A  2FFF80     MOV #0xFFF8, W0
+00065C  608000     AND W1, W0, W0
+00065E  880C20     MOV W0, OC1CON
+9:                     OC1R = 100;                 //Duty cycle first PWM pulse
+000660  200640     MOV #0x64, W0
+000662  880C10     MOV W0, OC1R
+10:                    OC1RS = 200;                //Duty cycle second PWM pulse
+000664  200C80     MOV #0xC8, W0
+000666  880C00     MOV W0, OC1RS
+11:                    OC1CONbits.OCTSEL = 0;      //select timer 2 as output compare base time
+000668  A96184     BCLR OC1CON, #3
+12:                    OC1R = 100;                 //Load the Compare Register Value               ???
+00066A  200640     MOV #0x64, W0
+00066C  880C10     MOV W0, OC1R
+13:                    OC1CONbits.OCM = 0b110;     //Select output compare mode
+00066E  800C21     MOV OC1CON, W1
+000670  2FFF80     MOV #0xFFF8, W0
+000672  608000     AND W1, W0, W0
+000674  B30060     IOR #0x6, W0
+000676  880C20     MOV W0, OC1CON
+14:                    set_timer2(61);             //Set timer 2 to 4 kHz
+000678  2003D0     MOV #0x3D, W0
+00067A  07FFB4     RCALL set_timer2
+15:                
+16:                    //// WO WIRD DER OUTPUT PORT DEFINIERT?
+17:                }
+00067C  FA8000     ULNK
+00067E  060000     RETURN
+---  C:/Users/finst/MPLABXProjects/mct_labor_1.X/port_mgmnt.c  ------------------------------------------
+1:                 #include "basics.h"
+2:                 //Prozessorspezifische Headerdatei
+3:                 #include "p33FJ128GP802.h"
+4:                 
+5:                 //Port A: 5 Pins (0-4), TRISA Register
+6:                 //Eingang 1, Ausgang 0
+7:                 //default: 1
+8:                 //Port B: 16 Pins (0-15), TRISB Register
+9:                 //Eingang 1, Ausgang 0
+10:                //default: 1
+11:                
+12:                //Analog: AN0-5 AN9-12, AD1PCFGL Register
+13:                //digital 1, analog 0
+14:                //default 0
+15:                
+16:                void port_reset() {
+0002D4  FA0000     LNK #0x0
+17:                    //Analoge Pins digital setzten
+18:                    //Alle Pins als Ausgänge definieren
+19:                    AD1PCFGL=1;
+0002D6  200010     MOV #0x1, W0
+0002D8  881960     MOV W0, AD1PCFGL
+20:                    TRISA=0;
+0002DA  EF22C0     CLR TRISA
+21:                    TRISB=0;    
+0002DC  EF22C8     CLR TRISB
+22:                }
+0002DE  FA8000     ULNK
+0002E0  060000     RETURN
+23:                
+24:                void set_porta(int pin, char richtung) {
+0002E2  FA0004     LNK #0x4
+0002E4  780F00     MOV W0, [W14]
+0002E6  984721     MOV.B W1, [W14+2]
+25:                    if (richtung == "o") {
+0002E8  90402E     MOV.B [W14+2], W0
+0002EA  FB0000     SE W0, W0
+0002EC  780080     MOV W0, W1
+0002EE  282CE0     MOV #0x82CE, W0
+0002F0  508F80     SUB W1, W0, [W15]
+0002F2  3A001A     BRA NZ, 0x328
+26:                        switch(pin){
+0002F4  78001E     MOV [W14], W0
+0002F6  500FE2     SUB W0, #0x2, [W15]
+0002F8  320010     BRA Z, 0x31A
+0002FA  500FE2     SUB W0, #0x2, [W15]
+0002FC  3C0005     BRA GT, 0x308
+0002FE  E00000     CP0 W0
+000300  320008     BRA Z, 0x312
+000302  500FE1     SUB W0, #0x1, [W15]
+000304  320008     BRA Z, 0x316
+000308  500FE3     SUB W0, #0x3, [W15]
+00030A  320009     BRA Z, 0x31E
+00030C  500FE4     SUB W0, #0x4, [W15]
+00030E  32000A     BRA Z, 0x324
+27:                            case 0: TRISAbits.TRISA0=0;
+000312  A902C0     BCLR TRISA, #0
+28:                                    break;
+000314  370028     BRA 0x366
+29:                            case 1: TRISAbits.TRISA1=0;
+000316  A922C0     BCLR TRISA, #1
+30:                                    break;
+000318  370026     BRA 0x366
+31:                            case 2: TRISAbits.TRISA2=0;
+00031A  A942C0     BCLR TRISA, #2
+32:                                    break;
+00031C  370024     BRA 0x366
+33:                            case 3: TRISAbits.TRISA3=0;
+00031E  A962C0     BCLR TRISA, #3
+34:                                    break;
+000320  000000     NOP
+000322  370021     BRA 0x366
+35:                            case 4: TRISAbits.TRISA4=0;
+000324  A982C0     BCLR TRISA, #4
+36:                                    break;
+000306  37002F     BRA 0x366
+000310  37002A     BRA 0x366
+000326  37001F     BRA 0x366
+37:                        }
+38:                    }
+39:                    else if (richtung == "i") {
+000328  90402E     MOV.B [W14+2], W0
+00032A  FB0000     SE W0, W0
+00032C  780080     MOV W0, W1
+00032E  282D00     MOV #0x82D0, W0
+000330  508F80     SUB W1, W0, [W15]
+000332  3A0019     BRA NZ, 0x366
+40:                    //richtung == "i"
+41:                        switch(pin){
+000334  78001E     MOV [W14], W0
+000336  500FE2     SUB W0, #0x2, [W15]
+000338  320010     BRA Z, 0x35A
+00033A  500FE2     SUB W0, #0x2, [W15]
+00033C  3C0005     BRA GT, 0x348
+00033E  E00000     CP0 W0
+000340  320008     BRA Z, 0x352
+000342  500FE1     SUB W0, #0x1, [W15]
+000344  320008     BRA Z, 0x356
+000346  37000F     BRA 0x366
+000348  500FE3     SUB W0, #0x3, [W15]
+00034A  320009     BRA Z, 0x35E
+00034C  500FE4     SUB W0, #0x4, [W15]
+00034E  320009     BRA Z, 0x362
+000350  37000A     BRA 0x366
+42:                            case 0: TRISAbits.TRISA0=1;
+000352  A802C0     BSET TRISA, #0
+43:                                    break;
+000354  370008     BRA 0x366
+44:                            case 1: TRISAbits.TRISA1=1;
+000356  A822C0     BSET TRISA, #1
+45:                                    break;
+000358  370006     BRA 0x366
+46:                            case 2: TRISAbits.TRISA2=1;
+00035A  A842C0     BSET TRISA, #2
+47:                                    break;
+00035C  370004     BRA 0x366
+48:                            case 3: TRISAbits.TRISA3=1;
+00035E  A862C0     BSET TRISA, #3
+49:                                    break;
+000360  370002     BRA 0x366
+50:                            case 4: TRISAbits.TRISA4=1;
+000362  A882C0     BSET TRISA, #4
+51:                                    break;
+000364  000000     NOP
+52:                        }
+53:                    }
+54:                }
+000366  FA8000     ULNK
+000368  060000     RETURN
+55:                
+56:                void set_portb(int pin, char richtung) {
+00036A  FA0004     LNK #0x4
+00036C  780F00     MOV W0, [W14]
+00036E  984721     MOV.B W1, [W14+2]
+57:                    if (richtung == "o") {
+000370  90402E     MOV.B [W14+2], W0
+000372  FB0000     SE W0, W0
+000374  780080     MOV W0, W1
+000376  282CE0     MOV #0x82CE, W0
+000378  508F80     SUB W1, W0, [W15]
+00037A  3A0039     BRA NZ, 0x3EE
+58:                        switch(pin){
+00037C  78001E     MOV [W14], W0
+00037E  DE80CF     ASR W0, #15, W1
+000380  2000F2     MOV #0xF, W2
+000382  200003     MOV #0x0, W3
+000384  500F82     SUB W0, W2, [W15]
+000386  588F83     SUBB W1, W3, [W15]
+000388  3E0071     BRA GTU, 0x46C
+00038A  016000     BRA W0
+00038C  37000F     BRA 0x3AC
+00038E  370010     BRA 0x3B0
+000390  370011     BRA 0x3B4
+000392  370012     BRA 0x3B8
+000394  370013     BRA 0x3BC
+000396  370014     BRA 0x3C0
+000398  370015     BRA 0x3C4
+00039A  370016     BRA 0x3C8
+00039C  370017     BRA 0x3CC
+00039E  370018     BRA 0x3D0
+0003A0  370019     BRA 0x3D4
+0003A2  37001A     BRA 0x3D8
+0003A4  37001B     BRA 0x3DC
+0003A6  37001C     BRA 0x3E0
+0003A8  37001D     BRA 0x3E4
+0003AA  37001F     BRA 0x3EA
+59:                            case 0: TRISBbits.TRISB0=0;
+0003AC  A902C8     BCLR TRISB, #0
+60:                                    break;
+0003AE  37005F     BRA 0x46E
+61:                            case 1: TRISBbits.TRISB1=0;
+0003B0  A922C8     BCLR TRISB, #1
+62:                                    break;
+0003B2  37005D     BRA 0x46E
+63:                            case 2: TRISBbits.TRISB2=0;
+0003B4  A942C8     BCLR TRISB, #2
+64:                                    break;
+0003B6  37005B     BRA 0x46E
+65:                            case 3: TRISBbits.TRISB3=0;
+0003B8  A962C8     BCLR TRISB, #3
+66:                                    break;
+0003BA  370059     BRA 0x46E
+67:                            case 4: TRISBbits.TRISB4=0;
+0003BC  A982C8     BCLR TRISB, #4
+68:                                    break;
+0003BE  370057     BRA 0x46E
+69:                            case 5: TRISBbits.TRISB5=0;
+0003C0  A9A2C8     BCLR TRISB, #5
+70:                                    break;
+0003C2  370055     BRA 0x46E
+71:                            case 6: TRISBbits.TRISB6=0;
+0003C4  A9C2C8     BCLR TRISB, #6
+72:                                    break;
+0003C6  370053     BRA 0x46E
+73:                            case 7: TRISBbits.TRISB7=0;
+0003C8  A9E2C8     BCLR TRISB, #7
+74:                                    break;
+0003CA  370051     BRA 0x46E
+75:                            case 8: TRISBbits.TRISB8=0;
+0003CC  A902C9     BCLR 0x2C9, #0
+76:                                    break;
+0003CE  37004F     BRA 0x46E
+77:                            case 9: TRISBbits.TRISB9=0;
+0003D0  A922C9     BCLR 0x2C9, #1
+78:                                    break;
+0003D2  37004D     BRA 0x46E
+79:                            case 10: TRISBbits.TRISB10=0;
+0003D4  A942C9     BCLR 0x2C9, #2
+80:                                    break;
+0003D6  37004B     BRA 0x46E
+81:                            case 11: TRISBbits.TRISB11=0;
+0003D8  A962C9     BCLR 0x2C9, #3
+82:                                    break;
+0003DA  370049     BRA 0x46E
+83:                            case 12: TRISBbits.TRISB12=0;
+0003DC  A982C9     BCLR 0x2C9, #4
+84:                                    break;
+0003DE  370047     BRA 0x46E
+85:                            case 13: TRISBbits.TRISB13=0;
+0003E0  A9A2C9     BCLR 0x2C9, #5
+86:                                    break;
+0003E2  370045     BRA 0x46E
+87:                            case 14: TRISBbits.TRISB14=0;
+0003E4  A9C2C9     BCLR 0x2C9, #6
+88:                                    break;
+0003E6  000000     NOP
+0003E8  370042     BRA 0x46E
+89:                            case 15: TRISBbits.TRISB15=0;
+0003EA  A9E2C9     BCLR 0x2C9, #7
+90:                                    break;
+0003EC  370040     BRA 0x46E
+00046C  000000     NOP
+91:                        }
+92:                    }
+93:                    else if (richtung == "i") {
+0003EE  90402E     MOV.B [W14+2], W0
+0003F0  FB0000     SE W0, W0
+0003F2  780080     MOV W0, W1
+0003F4  282D00     MOV #0x82D0, W0
+0003F6  508F80     SUB W1, W0, [W15]
+0003F8  3A003A     BRA NZ, 0x46E
+94:                    //richtung == "i"
+95:                        switch(pin){
+0003FA  78001E     MOV [W14], W0
+0003FC  DE80CF     ASR W0, #15, W1
+0003FE  2000F2     MOV #0xF, W2
+000400  200003     MOV #0x0, W3
+000402  500F82     SUB W0, W2, [W15]
+000404  588F83     SUBB W1, W3, [W15]
+000406  3E0033     BRA GTU, 0x46E
+000408  016000     BRA W0
+00040A  37000F     BRA 0x42A
+00040C  370010     BRA 0x42E
+00040E  370011     BRA 0x432
+000410  370012     BRA 0x436
+000412  370013     BRA 0x43A
+000414  370014     BRA 0x43E
+000416  370015     BRA 0x442
+000418  370016     BRA 0x446
+00041A  370017     BRA 0x44A
+00041C  370018     BRA 0x44E
+00041E  370019     BRA 0x452
+000420  37001A     BRA 0x456
+000422  37001B     BRA 0x45A
+000424  37001C     BRA 0x45E
+000426  37001D     BRA 0x462
+000428  37001E     BRA 0x466
+96:                            case 0: TRISBbits.TRISB0=1;
+00042A  A802C8     BSET TRISB, #0
+97:                                    break;
+00042C  370020     BRA 0x46E
+98:                            case 1: TRISBbits.TRISB1=1;
+00042E  A822C8     BSET TRISB, #1
+99:                                    break;
+000430  37001E     BRA 0x46E
+100:                           case 2: TRISBbits.TRISB2=1;
+000432  A842C8     BSET TRISB, #2
+101:                                   break;
+000434  37001C     BRA 0x46E
+102:                           case 3: TRISBbits.TRISB3=1;
+000436  A862C8     BSET TRISB, #3
+103:                                   break;
+000438  37001A     BRA 0x46E
+104:                           case 4: TRISBbits.TRISB4=1;
+00043A  A882C8     BSET TRISB, #4
+105:                                   break;
+00043C  370018     BRA 0x46E
+106:                           case 5: TRISBbits.TRISB5=1;
+00043E  A8A2C8     BSET TRISB, #5
+107:                                   break;
+000440  370016     BRA 0x46E
+108:                           case 6: TRISBbits.TRISB6=1;
+000442  A8C2C8     BSET TRISB, #6
+109:                                   break;
+000444  370014     BRA 0x46E
+110:                           case 7: TRISBbits.TRISB7=1;
+000446  A8E2C8     BSET TRISB, #7
+111:                                   break;
+000448  370012     BRA 0x46E
+112:                           case 8: TRISBbits.TRISB8=1;
+00044A  A802C9     BSET 0x2C9, #0
+113:                                   break;
+00044C  370010     BRA 0x46E
+114:                           case 9: TRISBbits.TRISB9=1;
+00044E  A822C9     BSET 0x2C9, #1
+115:                                   break;
+000450  37000E     BRA 0x46E
+116:                           case 10: TRISBbits.TRISB10=1;
+000452  A842C9     BSET 0x2C9, #2
+117:                                   break;
+000454  37000C     BRA 0x46E
+118:                           case 11: TRISBbits.TRISB11=1;
+000456  A862C9     BSET 0x2C9, #3
+119:                                   break;
+000458  37000A     BRA 0x46E
+120:                           case 12: TRISBbits.TRISB12=1;
+00045A  A882C9     BSET 0x2C9, #4
+121:                                   break;
+00045C  370008     BRA 0x46E
+122:                           case 13: TRISBbits.TRISB13=1;
+00045E  A8A2C9     BSET 0x2C9, #5
+123:                                   break;
+000460  370006     BRA 0x46E
+124:                           case 14: TRISBbits.TRISB14=1;
+000462  A8C2C9     BSET 0x2C9, #6
+125:                                   break;
+000464  370004     BRA 0x46E
+126:                           case 15: TRISBbits.TRISB15=1;
+000466  A8E2C9     BSET 0x2C9, #7
+127:                                   break;
+000468  000000     NOP
+00046A  370001     BRA 0x46E
+128:                       }
+129:                   }
+130:               }
+00046E  FA8000     ULNK
+000470  060000     RETURN
+131:               
+132:               void set_analog_port(int pin) {
+000472  FA0002     LNK #0x2
+000474  780F00     MOV W0, [W14]
+133:                   switch(pin) {
+000476  78001E     MOV [W14], W0
+000478  DE80CF     ASR W0, #15, W1
+00047A  2000C2     MOV #0xC, W2
+00047C  200003     MOV #0x0, W3
+00047E  500F82     SUB W0, W2, [W15]
+000480  588F83     SUBB W1, W3, [W15]
+000482  3E0054     BRA GTU, 0x52C
+000484  016000     BRA W0
+000486  37000C     BRA 0x4A0
+000488  370012     BRA 0x4AE
+00048A  370018     BRA 0x4BC
+00048C  37001E     BRA 0x4CA
+00048E  370024     BRA 0x4D8
+000490  37002A     BRA 0x4E6
+000492  37004C     BRA 0x52C
+000494  37004B     BRA 0x52C
+000496  37004A     BRA 0x52C
+000498  37002D     BRA 0x4F4
+00049A  370033     BRA 0x502
+00049C  370039     BRA 0x510
+00049E  37003F     BRA 0x51E
+134:                       case 0: AD1PCFGLbits.PCFG0=0;
+0004A0  A9032C     BCLR AD1PCFGL, #0
+135:                               set_porta(0, "i");
+0004A2  282D00     MOV #0x82D0, W0
+0004A4  784000     MOV.B W0, W0
+0004A6  784080     MOV.B W0, W1
+0004A8  EB0000     CLR W0
+0004AA  07FF1B     RCALL set_porta
+136:                               //TRISAbits.TRISA0=1;
+137:                               break;
+0004AC  37003F     BRA 0x52C
+138:                       case 1: AD1PCFGLbits.PCFG1=0;
+0004AE  A9232C     BCLR AD1PCFGL, #1
+139:                               set_porta(1, "i");
+0004B0  282D00     MOV #0x82D0, W0
+0004B2  784000     MOV.B W0, W0
+0004B4  784080     MOV.B W0, W1
+0004B6  200010     MOV #0x1, W0
+0004B8  07FF14     RCALL set_porta
+140:                               //TRISAbits.TRISA1=1;
+141:                               break;
+0004BA  370038     BRA 0x52C
+142:                       case 2: AD1PCFGLbits.PCFG2=0;
+0004BC  A9432C     BCLR AD1PCFGL, #2
+143:                               set_portb(0, "i");
+0004BE  282D00     MOV #0x82D0, W0
+0004C0  784000     MOV.B W0, W0
+0004C2  784080     MOV.B W0, W1
+0004C4  EB0000     CLR W0
+0004C6  07FF51     RCALL set_portb
+144:                               //TRISBbits.TRISB0=1;
+145:                               break;
+0004C8  370031     BRA 0x52C
+146:                       case 3: AD1PCFGLbits.PCFG3=0;
+0004CA  A9632C     BCLR AD1PCFGL, #3
+147:                               set_portb(1, "i");
+0004CC  282D00     MOV #0x82D0, W0
+0004CE  784000     MOV.B W0, W0
+0004D0  784080     MOV.B W0, W1
+0004D2  200010     MOV #0x1, W0
+0004D4  07FF4A     RCALL set_portb
+148:                               //TRISBbits.TRISB1=1;
+149:                               break;
+0004D6  37002A     BRA 0x52C
+150:                       case 4: AD1PCFGLbits.PCFG4=0;
+0004D8  A9832C     BCLR AD1PCFGL, #4
+151:                               set_portb(2, "i");
+0004DA  282D00     MOV #0x82D0, W0
+0004DC  784000     MOV.B W0, W0
+0004DE  784080     MOV.B W0, W1
+0004E0  200020     MOV #0x2, W0
+0004E2  07FF43     RCALL set_portb
+152:                               //TRISBbits.TRISB2=1;
+153:                               break;
+0004E4  370023     BRA 0x52C
+154:                       case 5: AD1PCFGLbits.PCFG5=0;
+0004E6  A9A32C     BCLR AD1PCFGL, #5
+155:                               set_portb(3, "i");
+0004E8  282D00     MOV #0x82D0, W0
+0004EA  784000     MOV.B W0, W0
+0004EC  784080     MOV.B W0, W1
+0004EE  200030     MOV #0x3, W0
+0004F0  07FF3C     RCALL set_portb
+156:                               //TRISBbits.TRISB3=1;
+157:                               break;
+0004F2  37001C     BRA 0x52C
+158:                       case 9: AD1PCFGLbits.PCFG9=0;
+0004F4  A9232D     BCLR 0x32D, #1
+159:                               set_portb(15, "i");
+0004F6  282D00     MOV #0x82D0, W0
+0004F8  784000     MOV.B W0, W0
+0004FA  784080     MOV.B W0, W1
+0004FC  2000F0     MOV #0xF, W0
+0004FE  07FF35     RCALL set_portb
+160:                               //TRISBbits.TRISB15=1;
+161:                               break;
+000500  370015     BRA 0x52C
+162:                       case 10: AD1PCFGLbits.PCFG10=0;
+000502  A9432D     BCLR 0x32D, #2
+163:                               set_portb(14, "i");
+000504  282D00     MOV #0x82D0, W0
+000506  784000     MOV.B W0, W0
+000508  784080     MOV.B W0, W1
+00050A  2000E0     MOV #0xE, W0
+00050C  07FF2E     RCALL set_portb
+164:                               //TRISBbits.TRISB14=1;
+165:                               break;
+00050E  37000E     BRA 0x52C
+166:                       case 11: AD1PCFGLbits.PCFG11=0;
+000510  A9632D     BCLR 0x32D, #3
+167:                               set_portb(13, "i");
+000512  282D00     MOV #0x82D0, W0
+000514  784000     MOV.B W0, W0
+000516  784080     MOV.B W0, W1
+000518  2000D0     MOV #0xD, W0
+00051A  07FF27     RCALL set_portb
+168:                               //TRISBbits.TRISB13=1;
+169:                               break;
+00051C  370007     BRA 0x52C
+170:                       case 12: AD1PCFGLbits.PCFG12=0;
+00051E  A9832D     BCLR 0x32D, #4
+171:                               set_portb(12, "i");
+000520  282D00     MOV #0x82D0, W0
+000522  784000     MOV.B W0, W0
+000524  784080     MOV.B W0, W1
+000526  2000C0     MOV #0xC, W0
+000528  07FF20     RCALL set_portb
+172:                               //TRISBbits.TRISB12=1;
+173:                               break;
+00052A  000000     NOP
+174:                   }
+175:                   
+176:               }
+00052C  FA8000     ULNK
+00052E  060000     RETURN
+---  C:/Users/finst/MPLABXProjects/mct_labor_1.X/clk_mgmnt.c  -------------------------------------------
+1:                 //Prozessorspezifische Headerdatei
+2:                 #include <p33FJ128GP802.h>
+3:                 //Config Header
+4:                 #include "basics.h"
+5:                 
+6:                 void clk_boost(int freq) {
+000530  FA0002     LNK #0x2
+000532  780F00     MOV W0, [W14]
+7:                     switch(freq){
+000534  78001E     MOV [W14], W0
+000536  500FE8     SUB W0, #0x8, [W15]
+000538  32002D     BRA Z, 0x594
+00053A  200501     MOV #0x50, W1
+00053C  500F81     SUB W0, W1, [W15]
+00053E  3A0039     BRA NZ, 0x5B2
+8:                         case 80:
+9:                             //M = 38
+10:                            PLLFBDbits.PLLDIV  = 38; 
+000540  803A31     MOV PLLFBD, W1
+000542  2FE000     MOV #0xFE00, W0
+000544  608080     AND W1, W0, W1
+000546  200260     MOV #0x26, W0
+000548  700001     IOR W0, W1, W0
+00054A  883A30     MOV W0, PLLFBD
+11:                            //Postscaler = 0
+12:                            CLKDIVbits.PLLPOST = 0;
+00054C  803A21     MOV CLKDIV, W1
+00054E  2FF3F0     MOV #0xFF3F, W0
+000550  608000     AND W1, W0, W0
+000552  883A20     MOV W0, CLKDIV
+13:                            //Prescaler = 0
+14:                            CLKDIVbits.PLLPRE  = 0; 
+000554  803A21     MOV CLKDIV, W1
+000556  2FFE00     MOV #0xFFE0, W0
+000558  608000     AND W1, W0, W0
+00055A  883A20     MOV W0, CLKDIV
+15:                            //OSCCON HIGH, Primary Source + XT + PLL
+16:                            __builtin_write_OSCCONH(0x03);
+00055C  200032     MOV #0x3, W2
+00055E  200780     MOV #0x78, W0
+000560  2009A1     MOV #0x9A, W1
+000562  207433     MOV #0x743, W3
+000564  784980     MOV.B W0, [W3]
+000566  784981     MOV.B W1, [W3]
+000568  784982     MOV.B W2, [W3]
+17:                            //OSCCON LOW
+18:                            __builtin_write_OSCCONL(0x1);
+00056A  200012     MOV #0x1, W2
+00056C  200460     MOV #0x46, W0
+00056E  200571     MOV #0x57, W1
+000570  207423     MOV #0x742, W3
+000572  784980     MOV.B W0, [W3]
+000574  784981     MOV.B W1, [W3]
+000576  784982     MOV.B W2, [W3]
+19:                            //wait for PLL
+20:                            while(OSCCONbits.COSC != 0b011);
+000578  000000     NOP
+00057A  803A11     MOV OSCCON, W1
+00057C  270000     MOV #0x7000, W0
+00057E  608080     AND W1, W0, W1
+000580  230000     MOV #0x3000, W0
+000582  508F80     SUB W1, W0, [W15]
+000584  3AFFFA     BRA NZ, 0x57A
+21:                            //wait for lock
+22:                            while(OSCCONbits.LOCK != 1);
+000586  000000     NOP
+000588  803A11     MOV OSCCON, W1
+00058A  200200     MOV #0x20, W0
+00058C  608000     AND W1, W0, W0
+00058E  E00000     CP0 W0
+000590  32FFFB     BRA Z, 0x588
+23:                            break;
+000592  37000F     BRA 0x5B2
+24:                        case 8:
+25:                            //OSCCON HIGH, Primary Source + XT
+26:                            __builtin_write_OSCCONH(0x02);
+000594  200022     MOV #0x2, W2
+000596  200780     MOV #0x78, W0
+000598  2009A1     MOV #0x9A, W1
+00059A  207433     MOV #0x743, W3
+00059C  784980     MOV.B W0, [W3]
+00059E  784981     MOV.B W1, [W3]
+0005A0  784982     MOV.B W2, [W3]
+27:                            //OSCCON LOW
+28:                            __builtin_write_OSCCONL(0x1);
+0005A2  200012     MOV #0x1, W2
+0005A4  200460     MOV #0x46, W0
+0005A6  200571     MOV #0x57, W1
+0005A8  207423     MOV #0x742, W3
+0005AA  784980     MOV.B W0, [W3]
+0005AC  784981     MOV.B W1, [W3]
+0005AE  784982     MOV.B W2, [W3]
+29:                            break;
+0005B0  000000     NOP
+30:                    }
+31:                }
+0005B2  FA8000     ULNK
+0005B4  060000     RETURN
+---  C:/Users/finst/MPLABXProjects/mct_labor_1.X/adw_mgmnt.c  -------------------------------------------
+1:                 //Prozessorspezifische Headerdatei
+2:                 #include <p33FJ128GP802.h>
+3:                 //Config Header
+4:                 #include "basics.h"
+5:                 
+6:                 void para_ADW_12bit()
+7:                 {
+000612  FA0000     LNK #0x0
+8:                     AD1CON1bits.AD12B = 1;      //12bit Auflösung
+000614  A84321     BSET 0x321, #2
+9:                     
+10:                    AD1CON2bits.CHPS = 0b00;    //Bei 12 Bit nur CH0 möglich
+000616  801911     MOV AD1CON2, W1
+000618  2FCFF0     MOV #0xFCFF, W0
+00061A  608000     AND W1, W0, W0
+00061C  881910     MOV W0, AD1CON2
+11:                    
+12:                    AD1CHS0bits.CH0NA   = 0;    // S/H Kanal 0, neg.Input ist VREFL
+00061E  A9E328     BCLR AD1CHS0, #7
+13:                    AD1CHS0bits.CH0SA   = 0;    // AN0 ist Signaleingang für S/H 0
+000620  801941     MOV AD1CHS0, W1
+000622  2FFE00     MOV #0xFFE0, W0
+000624  608000     AND W1, W0, W0
+000626  881940     MOV W0, AD1CHS0
+14:                
+15:                    set_timer1(61);              //setze Timer 1 auf 8kHz
+000628  2003D0     MOV #0x3D, W0
+00062A  07FFC5     RCALL set_timer1
+16:                    
+17:                    AD1CON3bits.ADRC = 1;        //1 = internal / 0 = external
+00062C  A8E325     BSET 0x325, #7
+18:                
+19:                    AD1CON1bits.ASAM    = 1;    // automatische Abtastung
+00062E  A84320     BSET AD1CON1, #2
+20:                    AD1CON1bits.SSRC = 0b111;   //automatisches Triggern
+000630  801901     MOV AD1CON1, W1
+000632  200E00     MOV #0xE0, W0
+000634  700001     IOR W0, W1, W0
+000636  881900     MOV W0, AD1CON1
+21:                
+22:                    AD1CON1bits.FORM = 0b00;    //Einstellung des Ausgabeformats: unsignend int
+000638  801901     MOV AD1CON1, W1
+00063A  2FCFF0     MOV #0xFCFF, W0
+00063C  608000     AND W1, W0, W0
+00063E  881900     MOV W0, AD1CON1
+23:                    
+24:                    AD1CON1bits.ADON = 1;       // AD-Wandler aktiv
+000640  A8E321     BSET 0x321, #7
+25:                
+26:                    IPC3bits.AD1IP = 3;       // IRQ priority 3
+000642  800551     MOV IPC3, W1
+000644  2FF8F0     MOV #0xFF8F, W0
+000646  608080     AND W1, W0, W1
+000648  200300     MOV #0x30, W0
+00064A  700001     IOR W0, W1, W0
+00064C  880550     MOV W0, IPC3
+27:                    IFS0bits.AD1IF  = 0;       // clear ADC Interrupt Flag
+00064E  A9A085     BCLR 0x85, #5
+28:                    IEC0bits.AD1IE = 1;       // enable the ADC Interrupt
+000650  A8A095     BSET 0x95, #5
+29:                }
+000652  FA8000     ULNK
+000654  060000     RETURN
+30:                
+---  C:/Users/finst/MPLABXProjects/mct_labor_1.X/5_2_1.c  -----------------------------------------------
+1:                 //Prozessorspezifische Headerdatei
+2:                 #include <p33FJ128GP802.h>
+3:                 //Config Header
+4:                 #include "basics.h"
+5:                 
+6:                 void main() {
+000680  FA0000     LNK #0x0
+7:                     port_reset();
+000682  07FE28     RCALL port_reset
+8:                     set_portb(15, "o");
+000684  282D20     MOV #0x82D2, W0
+000686  784000     MOV.B W0, W0
+000688  784080     MOV.B W0, W1
+00068A  2000F0     MOV #0xF, W0
+00068C  07FE6E     RCALL set_portb
+9:                     while (1) {
+10:                        //PORTBbits.RB15=~PORTBbits.RB15;
+11:                        PORTBbits.RB15 = 1;
+00068E  A8E2CB     BSET 0x2CB, #7
+12:                        PORTBbits.RB15 = 0;
+000690  A9E2CB     BCLR 0x2CB, #7
+13:                    }
+000692  37FFFD     BRA 0x68E
+14:                }
