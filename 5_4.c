@@ -1,8 +1,8 @@
-//Prozessorspezifische Headerdatei
 #include <p33FJ128GP802.h>
-//Config Header
+//Prozessorspezifische Headerdatei
 #include "system_init.h"
 #include "port_mgmnt.h"
+//custom headers
 
 //bool IsTimerSet = 0;
 int IsTimerSet = 0;

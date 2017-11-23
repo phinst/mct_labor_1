@@ -2,7 +2,6 @@
 //Prozessorspezifische Headerdatei
 #include "port_mgmnt.h"
 #include "adw_mgmnt.h"
-
 //custom headers
 
 void __attribute__((__interrupt__)) _T2Interrupt(void){
