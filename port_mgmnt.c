@@ -13,6 +13,10 @@
 //digital 1, analog 0
 //default 0
 
+//Aus- und Eingänge von 16 Pins (RP0-15) können per Multiplexer verschiedenen Peripherienaus- und eingängen zugewiesen werden.
+//Sicherhaltshalber muss während des Remappings das IOLOCK Bit des OSCCON Registers null gesetzt werden.
+//
+
 void clr_ports() {
     //Analoge Pins digital setzten
     AD1PCFGL=0xFFFF;
@@ -316,4 +320,154 @@ void pullup_cfg(int pinnummer, int state ) {
             //pin 28:   avdd            
         }
     }
+}
+
+void rpin_cfg(int pinnummer, int mode, char richtung){
+    __builtin_write_OSCCONL(OSCCONL & 0xBF);
+    //HW Lock Bit null setzen um das Schreiben auf Remapping Register zu erlauben
+    if(richtung == 'i'){
+        //Remapping eines Eingangspins
+        switch(pinnummer){
+            //Pinnummer nicht gleich des Index von RPn
+            case 4:     pinnummer=0;
+                        break;
+            case 5:     pinnummer=1;
+                        break;
+            case 6:     pinnummer=2;
+                        break;
+            case 7:     pinnummer=3;
+                        break;
+            case 11:    pinnummer=4;
+                        break;
+            case 14:    pinnummer=5;
+                        break;
+            case 15:    pinnummer=6;
+                        break;
+            case 16:    pinnummer=7;
+                        break;
+            case 17:    pinnummer=8;
+                        break;
+            case 18:    pinnummer=9;
+                        break;
+            case 21:    pinnummer=10;
+                        break;
+            case 22:    pinnummer=11;
+                        break;
+            case 23:    pinnummer=12;
+                        break;
+            case 24:    pinnummer=13;
+                        break;
+            case 25:    pinnummer=14;
+                        break;
+            case 26:    pinnummer=15;
+                        break;
+        }
+        switch(mode){
+            //mode:
+            //1: INT1, 2: INT2
+            //3: T2CK, 4: T3CK, 5: T4CK, 6: T5CK
+            //7: IC1, 8: IC2, 9: IC7, 10: IC8
+            //11: OCFA
+            //12: U1RX, 13: !U1CTS, 14: U2RX, 15: !U2CTS
+            //16: SDI1, 17: SCK1, 18: !SS1, 19: SDI2, 20: SCK2, 21: !SS2
+            //22: CSDI, 23: CSCK, 24: COFS, 25: CIRX
+            case 1:     RPINR0bits.INT1R = pinnummer;
+                        break;
+            case 2:     RPINR1bits.INT2R = pinnummer;
+                        break;
+            case 3:     RPINR3bits.T2CKR = pinnummer;
+                        break;
+            case 4:     RPINR3bits.T3CKR = pinnummer;
+                        break;
+            case 5:     RPINR4bits.T4CKR = pinnummer;
+                        break;
+            case 6:     RPINR4bits.T5CKR = pinnummer;
+                        break;
+            case 7:     RPINR7bits.IC1R = pinnummer;
+                        break;
+            case 8:     RPINR7bits.IC2R = pinnummer;
+                        break;
+            case 9:     RPINR10bits.IC7R = pinnummer;
+                        break;
+            case 10:    RPINR10bits.IC8R = pinnummer;
+                        break;
+            case 11:    RPINR11bits.OCFAR = pinnummer;
+                        break;
+            case 12:    RPINR18bits.U1RXR = pinnummer;
+                        break;
+            case 13:    RPINR18bits.U1CTSR = pinnummer;
+                        break;
+            case 14:    RPINR19bits.U2RXR = pinnummer;
+                        break;
+            case 15:    RPINR19bits.U2CTSR = pinnummer;
+                        break;
+            case 16:    RPINR20bits.SDI1R = pinnummer;
+                        break;
+            case 17:    RPINR20bits.SCK1R = pinnummer;
+                        break;
+            case 18:    RPINR21bits.SS1R = pinnummer;
+                        break;
+            case 19:    RPINR22bits.SDI2R = pinnummer;
+                        break;
+            case 20:    RPINR22bits.SCK2R = pinnummer;
+                        break;
+            case 21:    RPINR23bits.SS2R = pinnummer;
+                        break;
+            case 22:    RPINR24bits.CSDIR = pinnummer;
+                        break;
+            case 23:    RPINR24bits.CSCKR = pinnummer;
+                        break;
+            case 24:    RPINR25bits.COFSR = pinnummer;
+                        break;
+            case 25:    RPINR26bits.C1RXR = pinnummer;
+                        break;
+        }    
+    }
+    else if(richtung == 'o'){
+        //Remapping eines Ausgangspins
+        //mode:
+        //0(00000): NULL
+        //1(00001): C1OUT, 2(00010): C2OUT
+        //3(00011): U1TX, 4(00100): !U1RTS, 5(00101): U1TX, 6(00110): !U2RTS
+        //7(00111): SDO1, 8(01000): SCK1, 9(01001): !SS1, 10(01010): SDO2, 11(01011): SCK2, 12(01100): !SS2
+        //13(01101): CSDO, 14(01110): CSCK, 15(01111): COFS
+        //16(10000): C1TX,
+        //17(10010): OC1, 18(10011): OC2, 19(10100): OC3, 20(10101: OC4)
+        switch(pinnummer){
+            case 4:     RPOR0bits.RP0R = mode;
+                        break;
+            case 5:     RPOR0bits.RP1R = mode;
+                        break;
+            case 6:     RPOR1bits.RP2R = mode;
+                        break;
+            case 7:     RPOR1bits.RP3R = mode;
+                        break;
+            case 11:    RPOR2bits.RP4R = mode;
+                        break;
+            case 14:    RPOR2bits.RP5R = mode;
+                        break;
+            case 15:    RPOR3bits.RP6R = mode;
+                        break;
+            case 16:    RPOR3bits.RP7R = mode;
+                        break;
+            case 17:    RPOR4bits.RP8R = mode;
+                        break;
+            case 18:    RPOR4bits.RP9R = mode;
+                        break;
+            case 21:    RPOR5bits.RP10R = mode;
+                        break;
+            case 22:    RPOR5bits.RP11R = mode;
+                        break;
+            case 23:    RPOR6bits.RP12R = mode;
+                        break;
+            case 24:    RPOR6bits.RP13R = mode;
+                        break;
+            case 25:    RPOR7bits.RP14R = mode;
+                        break;
+            case 26:    RPOR7bits.RP15R = mode;
+                        break;
+        }
+    }
+    __builtin_write_OSCCONL(OSCCONL | 0x40);
+    //HW Lock Bit 1 setzen um das Schreiben auf Remapping Register zu verbieten
 }

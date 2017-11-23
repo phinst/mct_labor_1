@@ -15,7 +15,7 @@ extern "C" {
     extern void clr_ports();
     extern void pin_cfg(int pinnummer, char mode, char richtung);
     extern void pullup_cfg(int pinnummer, int state);
-    
+    extern void rpin_cfg(int pinnummer, int mode, char richtung);
 
 
 #ifdef	__cplusplus
