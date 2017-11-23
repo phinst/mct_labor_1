@@ -14,7 +14,8 @@ extern "C" {
 
     extern void d_write(int pinnummer, int value);
     extern int d_read(int pinnummer);
-    extern unsigned int a_read(int pinnummer);
+    extern unsigned int analog_manual_read();
+    extern void __attribute__((__interrupt__, no_auto_psv)) _ADC1Interrupt(void);
 
 
 #ifdef	__cplusplus
