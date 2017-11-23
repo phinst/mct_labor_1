@@ -6,7 +6,6 @@
 #include "timer_mgmnt.h"
 //custom headers
 
-//bool IsTimerSet = 0;
 int IsTimerSet = 0;
 
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void){
