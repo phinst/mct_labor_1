@@ -5,9 +5,8 @@
 
 //custom headers
 
-void __attribute__((__interrupt__)) _T2Interrupt(void) //ISR PWM
-{
-    switch (ADCValue) {
+void __attribute__((__interrupt__)) _T2Interrupt(void){
+    switch (adw_read1>>8) {
             case 0:
                 //duty cycle OC1RS= ??
                 break;

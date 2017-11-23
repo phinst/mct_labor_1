@@ -1,35 +1,35 @@
 //Prozessorspezifische Headerdatei
 #include <p33FJ128GP802.h>
 //Config Header
-#include "basics.h"
+#include "system_init.h"
+#include "port_mgmnt.h"
 
 //bool IsTimerSet = 0;
 int IsTimerSet = 0;
 
-void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
-{
- PORTBbits.RB6=!PORTBbits.RB6;//stark fragwürdig ob richtig
- IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
+void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void){
+    d_write(26, ~d_read(26));
+    IsTimerSet=0;
+    IFS0bits.T1IF = 0;
+    // Clear Timer1 Interrupt Flag
 }
 
-int main (void)
-{
-    port_reset();
-    set_portb(15, "o"); //RB15 als Ausgang definieren
-    set_portb(6, "i"); //RB6 als Eingang definieren
+void main(){
+    clr_ports();
+    pin_cfg(26, 'd', "o"); 
+    //RB15 als Ausgang definieren
+    pin_cfg(15, 'd', 'i'); 
+    //RB6 als Eingang definieren
 
-    while (1)                 // Endless loop
-    {
-        if(PORTBbits.RB6 && IsTimerSet){
+    while (1){
+        if(d_read(15) && !IsTimerSet){
             set_timer1(249);
-            IsTimerSet=0;
+            IsTimerSet=1;
 
         }
-        if(!PORTBbits.RB6 && IsTimerSet==0){
+        if(!d_read(15) && !IsTimerSet){
             set_timer1(124);
             IsTimerSet=1;
         }
     }
-
-return 0;
 }
