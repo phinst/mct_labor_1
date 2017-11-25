@@ -2,59 +2,61 @@
 //Prozessorspezifische Headerdatei
 #include "port_mgmnt.h"
 #include "adw_mgmnt.h"
+#include "pwm_mgmnt.h"
+#include "system_init.h"
 //custom headers
 
 void __attribute__((__interrupt__)) _T2Interrupt(void){
     switch (adw_read1>>8) {
-            case 0:
-                //duty cycle OC1RS= ??
-                break;
-            case 1:
-                //duty cycle
-                break;
-            case 2:
-                //duty cycle
-                break;
-            case 3:
-                //duty cycle
-                break;
-            case 4:
-                //duty cycle
-                break;
-            case 5:
-                //duty cycle
-                break;
-            case 6:
-                //duty cycle
-                break;
-            case 7:
-                //duty cycle
-                break;
-            case 8:
-                //duty cycle
-                break;
-            case 9:
-                //duty cycle
-                break;
-            case 10:
-                //duty cycle
-                break;
-            case 11:
-                //duty cycle
-                break;
-            case 12:
-                //duty cycle
-                break;
-            case 13:
-                //duty cycle
-                break;
-            case 14:
-                //duty cycle
-                break;
-            case 15:
-                //duty cycle
-                break;
-        }
+        case 0:
+            pwm1_duty(5);
+            break;
+        case 1:
+            pwm1_duty(10);
+            break;
+        case 2:
+            pwm1_duty(20);
+            break;
+        case 3:
+            pwm1_duty(20);
+            break;
+        case 4:
+            pwm1_duty(40);
+            break;
+        case 5:
+            pwm1_duty(40);
+            break;
+        case 6:
+            pwm1_duty(50);
+            break;
+        case 7:
+            pwm1_duty(50);
+            break;
+        case 8:
+            pwm1_duty(60);
+            break;
+        case 9:
+            pwm1_duty(60);
+            break;
+        case 10:
+            pwm1_duty(80);
+            break;
+        case 11:
+            pwm1_duty(80);
+            break;
+        case 12:
+            pwm1_duty(90);
+            break;
+        case 13:
+            pwm1_duty(90);
+            break;
+        case 14:
+            pwm1_duty(95);
+            break;
+        case 15:
+            pwm1_duty(95);
+            break;
+    }
 }
 
 int main(void) {
@@ -64,8 +66,8 @@ int main(void) {
     //analoger Eingang auf Pin#2
     adw12_cfg(2, 'a');
     //adw konfigurieren
-    
-    //pwm_init();
+    pwm1_init(16, 61);
+    //PWM Initialisierung
 
     while(1){
         switch(adw_read1>>8){
