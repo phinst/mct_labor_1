@@ -95,40 +95,24 @@ void pwm4_init(int pinnummer, int freq){
 
 void pwm1_duty(int dutycycle){
     //duty cycle in %
-    int period = PR2;
-    //Wert der Zählerperiode aus dem Periodenregister von Timer 2
-    dutycycle = dutycycle/100;
-    //muss man das in float umcasten?
-    OC1RS = period * dutycycle;                
+    OC1RS = (PR2 * dutycycle)/100;                
     //duty cycle für nächste PWM Pulse
 }
 
 void pwm2_duty(int dutycycle){
     //duty cycle in %
-    int period = PR2;
-    //Wert der Zählerperiode aus dem Periodenregister von Timer 2
-    dutycycle = dutycycle/100;
-    //muss man das in float umcasten?
-    OC2RS = period * dutycycle;                
+    OC2RS = (PR2 * dutycycle)/100;                
     //duty cycle für nächste PWM Pulse
 }
 
 void pwm3_duty(int dutycycle){
     //duty cycle in %
-    int period = PR3;
-    //Wert der Zählerperiode aus dem Periodenregister von Timer 3
-    dutycycle = dutycycle/100;
-    //muss man das in float umcasten?
-    OC3RS = period * dutycycle;                
+    OC3RS = (PR3 * dutycycle)/100;                
     //duty cycle für nächste PWM Pulse
 }
 
 void pwm4_duty(int dutycycle){
     //duty cycle in %
-    int period = PR3;
-    //Wert der Zählerperiode aus dem Periodenregister von Timer 3
-    dutycycle = dutycycle/100;
-    //muss man das in float umcasten?
-    OC4RS = period * dutycycle;                
+    OC3RS = (PR3 * dutycycle)/100;       
     //duty cycle für nächste PWM Pulse
 }
