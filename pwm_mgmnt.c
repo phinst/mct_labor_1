@@ -47,7 +47,7 @@ void pwm2_init(int pinnummer, int freq){
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
-    rpin_cfg(pinnummer, 17, 'o');
+    rpin_cfg(pinnummer, 18, 'o');
     //Schalten des OC Outputs auf den gewünschten Pin
 }
 
@@ -68,7 +68,7 @@ void pwm3_init(int pinnummer, int freq){
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
-    rpin_cfg(pinnummer, 17, 'o');
+    rpin_cfg(pinnummer, 19, 'o');
     //Schalten des OC Outputs auf den gewünschten Pin
 }
 
@@ -89,7 +89,7 @@ void pwm4_init(int pinnummer, int freq){
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
-    rpin_cfg(pinnummer, 17, 'o');
+    rpin_cfg(pinnummer, 20, 'o');
     //Schalten des OC Outputs auf den gewünschten Pin
 }
 
