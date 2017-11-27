@@ -12,9 +12,9 @@
 void pwm1_init(int pinnummer, int freq){
     OC1CONbits.OCM = 0b000;     
     //Disable Output Compare Module
-    OC1R = freq/2;                 
+    OC1R = 0;                 
     //Duty cycle first PWM pulse
-    OC1RS = 0x0;                
+    OC1RS = 0;                
     //Duty cycle of next PWM pulses
     OC1CONbits.OCTSEL = 0;      
     //select output compare base time
@@ -26,7 +26,7 @@ void pwm1_init(int pinnummer, int freq){
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
-    rpin_cfg(pinnummer, 17, 'o');
+    rpin_cfg(pinnummer, 18, 'o');
     //Schalten des OC Outputs auf den gewünschten Pin
 }
 
@@ -47,7 +47,7 @@ void pwm2_init(int pinnummer, int freq){
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
-    rpin_cfg(pinnummer, 18, 'o');
+    rpin_cfg(pinnummer, 19, 'o');
     //Schalten des OC Outputs auf den gewünschten Pin
 }
 
@@ -68,7 +68,7 @@ void pwm3_init(int pinnummer, int freq){
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
-    rpin_cfg(pinnummer, 19, 'o');
+    rpin_cfg(pinnummer, 20, 'o');
     //Schalten des OC Outputs auf den gewünschten Pin
 }
 
@@ -89,7 +89,7 @@ void pwm4_init(int pinnummer, int freq){
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
-    rpin_cfg(pinnummer, 20, 'o');
+    rpin_cfg(pinnummer, 21, 'o');
     //Schalten des OC Outputs auf den gewünschten Pin
 }
 
