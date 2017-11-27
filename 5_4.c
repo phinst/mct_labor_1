@@ -7,6 +7,7 @@
 //custom headers
 
 int IsTimerSet = 0;
+int onezero =0;
 
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void){
     d_write(26, ~d_read(26));
@@ -24,6 +25,8 @@ void main(){
     //RB15 als Ausgang definieren
     pin_cfg(15, 'd', 'i'); 
     //RB6 als Eingang definieren
+    pullup_cfg(15, 1);
+    //Pullup schalten, falls PIN in der Luft hängt
 
     while (1){
         if(d_read(15) && !IsTimerSet){
