@@ -64,7 +64,7 @@ void pwm3_init(int pinnummer, int freq){
     OC3CONbits.OCM = 0b110;     
     //Select output compare mode
     //6: pwm w/o fault detection
-    if (T3CONbits.TON == 0) set_timer3(0, freq, 16);
+    if (T3CONbits.TON == 0) set_timer3(freq);
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
@@ -85,7 +85,7 @@ void pwm4_init(int pinnummer, int freq){
     OC4CONbits.OCM = 0b110;     
     //Select output compare mode
     //6: pwm w/o fault detection
-    if (T3CONbits.TON == 0) set_timer3(0, freq, 16);
+    if (T3CONbits.TON == 0) set_timer3(freq);
     //Timer falls noch nicht geschehen aktivieren
     pin_cfg(pinnummer, 'd', 'o');
     //gewünschter Pin als digitaler Ausgang
